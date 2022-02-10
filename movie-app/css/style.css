@@ -36,12 +36,24 @@ body{
 .title{
 
 }
+
+.search__inut{
+  border: 2px solid #51516a;
+  background: #383846;
+  height: 40px;
+  width: 350px;
+  border-radius: 20px;
+  padding: 0 20px;
+}
 .movies__item {
   flex: 0 1 300px;
 }
 .movie{
   background: #2f2f3d;
   border-radius: 10px;  
+}
+.movie__poster{
+  border-radius: 10px 10px 0 0;
 }
 .movie__details{
   padding: 10px;
