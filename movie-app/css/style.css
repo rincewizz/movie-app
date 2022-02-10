@@ -37,7 +37,7 @@ body{
 
 }
 
-.search__inut{
+.search__input{
   border: 2px solid #51516a;
   background: #383846;
   height: 40px;
@@ -60,6 +60,9 @@ body{
 }
 .movie__description{
   display: none;
+}
+.movies__not-found{
+  
 }
 
 .footer{
