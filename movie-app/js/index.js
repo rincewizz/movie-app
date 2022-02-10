@@ -1,6 +1,7 @@
 
 // let url = 'https://api.themoviedb.org/3/search/movie?api_key=b9faf408359afa818cfad895e40dfa27&language=en-US&include_adult=false&page=1';
 let search = document.querySelector(".search__input");
+let searchClear = document.querySelector(".search__clear");
 let movies = document.querySelector(".movies");
 
 let api = {
@@ -28,6 +29,20 @@ async function init(){
       showMovies( await getMovies( api.searchMovieUrl({query:e.target.value}) ) );
     }
   });
+
+  search.addEventListener("input", (e) => {
+    if (e.target.value) {
+      searchClear.classList.remove("search__clear--hidden")
+    }else{
+      searchClear.classList.add("search__clear--hidden")
+    }
+  });
+
+  searchClear.addEventListener("click", (e) => {
+    search.value="";
+    search.dispatchEvent(new Event("input", {bubbles : false, cancelable : true}));
+  });
+
 }
 
 
@@ -45,7 +60,7 @@ function showMovies(listMovies){
   if(listMovies.length>0){
     movies.innerHTML = listMovies.map( val => 
     `<div class="movies__item movie">
-        <img src="https://www.themoviedb.org/t/p/w300_and_h450_bestv2/${val.poster_path}" alt="" class="movie__poster">
+        <img src="https://www.themoviedb.org/t/p/w300_and_h450_bestv2/${val.poster_path}" loading="lazy" width="300" height="450" alt="" class="movie__poster">
         <div class="movie__details">
           <div class="movie__title">${val.title}</div>
           <div class="movie__rate">${val.vote_average}</div>

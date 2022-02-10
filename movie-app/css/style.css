@@ -36,6 +36,29 @@ body{
 .title{
 
 }
+.search{
+  position: relative;
+}
+.search__clear {
+  padding: 0px 25px 0 0;
+  position: absolute;
+  top: 0;
+  color: #fff;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  display: block;
+  visibility: visible;
+}
+.search__clear--hidden{
+  visibility: hidden;
+}
 
 .search__input{
   border: 2px solid #51516a;
@@ -44,7 +67,23 @@ body{
   width: 350px;
   border-radius: 20px;
   padding: 0 20px;
+  color: #fbfbfb;
+  font-size: 16px;
+  transition: 0.4s;
 }
+
+.search__input:focus,
+.search__input:focus-visible{
+  outline: none;
+  box-shadow: 0px 0px 5px 3px #6060b6;
+}
+.search__input::-webkit-search-decoration,
+.search__input::-webkit-search-cancel-button,
+.search__input::-webkit-search-results-button,
+.search__input::-webkit-search-results-decoration {
+ display: none; 
+}
+
 .movies__item {
   flex: 0 1 300px;
 }
@@ -62,7 +101,7 @@ body{
   display: none;
 }
 .movies__not-found{
-  
+
 }
 
 .footer{
