@@ -25,7 +25,7 @@ async function init(){
   showMovies( await getMovies( api.popularMovieUrl() ));
 
   search.addEventListener("keyup", async (e) => {
-    if (e === "Enter" || e.keyCode === 13) {
+    if ( (e.key === "Enter" || e.keyCode === 13) && e.currentTarget.value) {
       showMovies( await getMovies( api.searchMovieUrl({query:e.target.value}) ) );
     }
   });
@@ -43,32 +43,47 @@ async function init(){
     search.dispatchEvent(new Event("input", {bubbles : false, cancelable : true}));
   });
 
+  movies.addEventListener("click", (e) => {
+    // console.log(e.target);
+    let movie = e.target.closest(".movie");
+    if(movie){      
+      if(movie.classList.contains("movie--show-desc")){
+        movie.classList.toggle("movie--show-main");
+      }else{        
+        movie.classList.remove("movie--show-main");
+      }
+      movie.classList.toggle("movie--show-desc");      
+    }
+  });
+
 }
 
 
+async function getMovies(url){  
 
-async function getMovies(url){
-  
   let response = await fetch(url);
   let result = await response.json(); 
-  // console.log(result);
+  console.log(result);
   return result.results;
 }
 
 function showMovies(listMovies){
-
+  movies.innerHTML ="";
   if(listMovies.length>0){
-    movies.innerHTML = listMovies.map( val => 
+    movies.innerHTML += listMovies.map( val => 
     `<div class="movies__item movie">
-        <img src="https://www.themoviedb.org/t/p/w300_and_h450_bestv2/${val.poster_path}" loading="lazy" width="300" height="450" alt="" class="movie__poster">
-        <div class="movie__details">
-          <div class="movie__title">${val.title}</div>
-          <div class="movie__rate">${val.vote_average}</div>
-          <div class="movie__date">${val.release_date}</div>
+        <div class="movie__main">
+          <img src="https://www.themoviedb.org/t/p/w300_and_h450_bestv2/${val.poster_path}" loading="lazy" width="300" height="450" alt="" class="movie__poster">
+          <div class="movie__details">
+            <div class="movie__title">${val.title}</div>
+            <div class="movie__rate">${val.vote_average}</div>
+            <div class="movie__date">${val.release_date}</div>
+          </div>
         </div>
         <div class="movie__description">${val.overview}</div>
       </div>`
-    ).join('');  
+    ).join(''); 
+
   }else{
     movies.innerHTML = `<div class="movies__not-found">Ничего не найдено по запросу: ${search.value}</div>`;
   }

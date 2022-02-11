@@ -88,8 +88,10 @@ body{
   flex: 0 1 300px;
 }
 .movie{
-  background: #2f2f3d;
-  border-radius: 10px;  
+  border-radius: 10px; 
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
 }
 .movie__poster{
   border-radius: 10px 10px 0 0;
@@ -97,9 +99,44 @@ body{
 .movie__details{
   padding: 10px;
 }
-.movie__description{
-  display: none;
+.movie__main, .movie__description{
+  backface-visibility: hidden;
+  border-radius: 10px; 
+  /*transition: transform .6s linear;*/
 }
+
+.movie__main{
+  background: #2f2f3d;
+  transform: scale(1) perspective(300px) rotateY(0deg);
+  height: 100%;
+}
+.movie__description{
+  position: absolute;
+  top: 0;
+  transform: scale(1) perspective(300px) rotateY(180deg);
+  background: #363657;
+  padding: 20px;
+  height: 100%;
+  font-size: 20px;
+  overflow-y: overlay;
+  line-height: 1.5;
+  box-sizing: border-box;
+
+}
+
+.movie--show-main > .movie__main{
+  animation: flip-show 0.6s linear both;
+}
+.movie--show-main > .movie__description{
+  animation: flip-hide 0.6s linear both;
+}
+.movie--show-desc > .movie__main{
+    animation: flip-hide .6s linear both;
+}
+.movie--show-desc > .movie__description{
+    animation: flip-show .6s linear both;
+}
+
 .movies__not-found{
 
 }
@@ -125,4 +162,33 @@ body{
 .footer__logo{
   width: auto;
   height: 22px;
+}
+
+@keyframes flip-hide {
+  0% {
+      transform: scale(1) perspective(300px) rotateY(0deg);
+  }
+  33% {
+      transform: scale(0.7) perspective(300px) rotateY(0deg);
+  }
+  66% {
+      transform: scale(0.4) perspective(300px) rotateY(-180deg) ;
+  }
+  100% {
+      transform:  scale(0.4) perspective(300px) rotateY(-180deg);
+  }
+}
+@keyframes flip-show {
+  0% {
+      transform: scale(0.4) perspective(300px) rotateY(180deg);
+  }
+  33% {
+      transform: scale(0.4) perspective(300px) rotateY(180deg);
+  }
+  66% {
+      transform: scale(0.7) perspective(300px) rotateY(0deg) ;
+  }
+  100% {
+      transform:  scale(1) perspective(300px) rotateY(0deg);
+  }
 }
