@@ -3,6 +3,8 @@
 let search = document.querySelector(".search__input");
 let searchClear = document.querySelector(".search__clear");
 let movies = document.querySelector(".movies");
+let searchQuery = "";
+let currentPage = 1;
 
 let api = {
   baseUrl : "https://api.themoviedb.org/3/",
@@ -26,6 +28,8 @@ async function init(){
 
   search.addEventListener("keyup", async (e) => {
     if ( (e.key === "Enter" || e.keyCode === 13) && e.currentTarget.value) {
+      currentPage = 1;
+      searchQuery = e.target.value;
       showMovies( await getMovies( api.searchMovieUrl({query:e.target.value}) ) );
     }
   });
@@ -43,6 +47,10 @@ async function init(){
     search.dispatchEvent(new Event("input", {bubbles : false, cancelable : true}));
   });
 
+  async function loadMore(query, page){
+    showMovies( await getMovies( api.searchMovieUrl({query:query, page:page}) ) );
+  }
+
   movies.addEventListener("click", (e) => {
     // console.log(e.target);
     let movie = e.target.closest(".movie");
@@ -54,6 +62,12 @@ async function init(){
       }
       movie.classList.toggle("movie--show-desc");      
     }
+
+    if(e.target.classList.contains("movies__loadmore-btn")){
+      e.target.remove();
+      loadMore(searchQuery, ++currentPage);
+    }
+
   });
 
 }
@@ -64,13 +78,19 @@ async function getMovies(url){
   let response = await fetch(url);
   let result = await response.json(); 
   console.log(result);
-  return result.results;
+  return {listMovies:result.results, page : result.page, pages:result.total_pages};
 }
 
-function showMovies(listMovies){
-  movies.innerHTML ="";
+function showMovies({listMovies, page=1, pages=1}){
+  let loadMore = false;
+  if(page==1){
+    movies.innerHTML ="";  
+  }else if(page!=pages){
+    loadMore = true;
+  }
+  
   if(listMovies.length>0){
-    movies.innerHTML += listMovies.map( val => 
+    movies.insertAdjacentHTML("beforeend", listMovies.map( val => 
     `<div class="movies__item movie">
         <div class="movie__main">
           <img src="https://www.themoviedb.org/t/p/w300_and_h450_bestv2/${val.poster_path}" loading="lazy" width="300" height="450" alt="" class="movie__poster">
@@ -82,10 +102,13 @@ function showMovies(listMovies){
         </div>
         <div class="movie__description">${val.overview}</div>
       </div>`
-    ).join(''); 
-
+    ).join('') ); 
+    movies.insertAdjacentHTML("beforeend",
+      `<div class="movies__loadmore">
+        <button class="movies__loadmore-btn">Load more</button>
+       </div>`);
   }else{
-    movies.innerHTML = `<div class="movies__not-found">Ничего не найдено по запросу: ${search.value}</div>`;
+    movies.innerHTML = `<div class="movies__not-found">Sorry, no results found for your search query: ${search.value}</div>`;
   }
 
 

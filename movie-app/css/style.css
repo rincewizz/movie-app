@@ -11,6 +11,9 @@ body{
   color: #fbfbfb;
 }
 
+main{
+  padding-bottom: 50px;
+}
 .container{
   max-width: 1440px;
   margin: 0 auto;
@@ -139,6 +142,19 @@ body{
 
 .movies__not-found{
 
+}
+.movies__loadmore{
+  flex: 1 1 100%;
+}
+.movies__loadmore-btn{
+  margin: 0 auto;
+  display: block;
+  font-size: 20px;
+  padding: 10px 20px;
+  border: 2px solid #51516a;
+  background: #383846;
+  color: #fbfbfb;
+  cursor: pointer;
 }
 
 .footer{
