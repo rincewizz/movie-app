@@ -5,6 +5,7 @@ let searchClear = document.querySelector(".search__clear");
 let movies = document.querySelector(".movies");
 let searchQuery = "";
 let currentPage = 1;
+let currentMethod = "popular";
 
 let api = {
   baseUrl : "https://api.themoviedb.org/3/",
@@ -13,10 +14,12 @@ let api = {
   adult : false,
   searchMovieUrl : function({query,page = 1}){
     let method = "search/movie";
+    currentMethod = "search";
     return `${this.baseUrl}${method}?api_key=${this.api_key}&language=${this.language}&page=${page}&query=${query}`;
   },
   popularMovieUrl : function(){
     let method = "movie/popular";
+    currentMethod = "popular";
     return `${this.baseUrl}${method}?api_key=${this.api_key}&language=${this.language}`;    
   }
 }
@@ -102,11 +105,14 @@ function showMovies({listMovies, page=1, pages=1}){
         </div>
         <div class="movie__description">${val.overview}</div>
       </div>`
-    ).join('') ); 
-    movies.insertAdjacentHTML("beforeend",
-      `<div class="movies__loadmore">
-        <button class="movies__loadmore-btn">Load more</button>
-       </div>`);
+    ).join('') );
+    if(currentMethod=="search"){
+      movies.insertAdjacentHTML("beforeend",
+        `<div class="movies__loadmore">
+          <button class="movies__loadmore-btn">Load more</button>
+         </div>`);
+    } 
+
   }else{
     movies.innerHTML = `<div class="movies__not-found">Sorry, no results found for your search query: ${search.value}</div>`;
   }
