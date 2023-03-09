@@ -1,5 +1,3 @@
-
-// let url = 'https://api.themoviedb.org/3/search/movie?api_key=b9faf408359afa818cfad895e40dfa27&language=en-US&include_adult=false&page=1';
 let search = document.querySelector(".search__input");
 let searchClear = document.querySelector(".search__clear");
 let movies = document.querySelector(".movies");
@@ -55,7 +53,7 @@ async function init(){
   }
 
   movies.addEventListener("click", (e) => {
-    // console.log(e.target);
+
     let movie = e.target.closest(".movie");
     if(movie){      
       if(movie.classList.contains("movie--show-desc")){
@@ -78,10 +76,10 @@ async function init(){
 
 async function getMovies(url){  
 
-  let response = await fetch(url);
-  let result = await response.json(); 
-  console.log(result);
-  return {listMovies:result.results, page : result.page, pages:result.total_pages};
+  let response = await fetch('https://corsproxy.io/?' + encodeURIComponent(url));
+  let { results, page, total_pages } = await response.json();
+
+  return { listMovies: results, page, pages:total_pages };
 }
 
 function showMovies({listMovies, page=1, pages=1}){
