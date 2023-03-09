@@ -76,7 +76,7 @@ async function init(){
 
 async function getMovies(url){  
 
-  let response = await fetch('https://corsproxy.io/?' + encodeURIComponent(url));
+  let response = await fetch('https://api.codetabs.com/v1/proxy/?quest=' + encodeURIComponent(url));
   let { results, page, total_pages } = await response.json();
 
   return { listMovies: results, page, pages:total_pages };
@@ -94,7 +94,7 @@ function showMovies({listMovies, page=1, pages=1}){
     movies.insertAdjacentHTML("beforeend", listMovies.map( val => 
     `<div class="movies__item movie">
         <div class="movie__main">
-          <img src="${val.poster_path ? 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/'+val.poster_path : 'img/image_not_found.jpg'}" loading="lazy" width="300" height="450" alt="" class="movie__poster">
+          <img src="${val.poster_path ? 'https://api.codetabs.com/v1/proxy/?quest=' + encodeURIComponent('https://www.themoviedb.org/t/p/w300_and_h450_bestv2/'+val.poster_path) : 'img/image_not_found.jpg'}" loading="lazy" width="300" height="450" alt="" class="movie__poster">
           <div class="movie__details">
             <div class="movie__title">${val.title}</div>
             <div class="movie__rate">${val.vote_average}</div>
